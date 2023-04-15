@@ -1,9 +1,9 @@
 package com.feriadedaxecommerce.entity;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Orders {
@@ -15,17 +15,11 @@ public class Orders {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
-
     private LocalDateTime orderDate;
     private BigDecimal totalPrice;
-    private Integer quantity;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
     // Getters and setters
     public Integer getId() {
@@ -44,22 +38,6 @@ public class Orders {
         this.customer = customer;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
@@ -76,12 +54,11 @@ public class Orders {
         this.totalPrice = totalPrice;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
-
 }
